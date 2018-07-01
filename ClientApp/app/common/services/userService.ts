@@ -1,5 +1,5 @@
-import { Injectable, InjectToken, Inject } from '@angular/core';
-import { Headers, Http } from '@angular/http';
+import { Injectable, Inject } from '@angular/core';
+import { Http } from '@angular/http';
 import { Observable } from 'rxjs/Observable';
 import 'rxjs/add/operator/catch';
 import 'rxjs/add/operator/map';
@@ -8,15 +8,15 @@ import { User, AADUser } from '../models/user';
 
 @Injectable()
  export class UserService {
-     private originUrl: string;
-     private aadUser: AADUser;
+     private baseUrl: string;
+     private aadUser: AADUser | null = null;
 
-     constructor(private http: Http, @Inject('ORIGIN_URL')originUrl: string) {
-         this.originUrl = originUrl;
+     constructor(private http: Http, @Inject('BASE_URL')baseUrl: string) {
+         this.baseUrl = baseUrl;
      }
 
      public getUser(): Observable<User> {
-        return this.http.get(`${this.originUrl}/.auth/me`)
+        return this.http.get(`${this.baseUrl}/.auth/me`)
             .map(response => {
                 try {
                     this.aadUser = response.json()[0] as AADUser;

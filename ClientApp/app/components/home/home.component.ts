@@ -10,7 +10,7 @@ export class HomeComponent implements OnInit {
     user: User | null = null;
 
     ngOnInit(): void {
-        this.userService.getUser().subscribe(user => this.user = user);
+        // this.userService.getUser().subscribe(user => this.user = user);
     }
     constructor(private userService: UserService) {
 
