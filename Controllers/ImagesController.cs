@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using azuretoolkit.Models;
@@ -58,6 +59,13 @@ namespace azuretoolkit.Controllers
             _context.SaveChanges ();
 
             return Ok ();
+        }
+
+        [HttpGet ("{userId}")]
+        public IActionResult GetImages (string userID)
+        {
+            var images = _context.SavedImages.Where(image => image.UserId == userID);
+            return Ok (images);
         }
     }
 

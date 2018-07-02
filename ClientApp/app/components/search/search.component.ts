@@ -21,6 +21,7 @@ export class SearchComponent {
     isAnalyzing = false;
     isSearching = false;
     currentItemSaved = false;
+    savingImage = false;
 
     constructor(private cognitiveService: CognitiveService, private azureToolkitService: AzureToolkitService) { };
 
@@ -54,6 +55,8 @@ export class SearchComponent {
 
     public saveImage(imagePostRequest: ImagePostRequest) {
         if (this.currentItem != null && this.currentAnalytics != null) {
+            this.savingImage = true;
+
             let transferObject = {
                 userId: "Vedran",
                 url: this.currentItem.thumbnailUrl,
@@ -62,8 +65,10 @@ export class SearchComponent {
                 description: this.currentAnalytics.description.captions[0].text,
                 tags: this.currentAnalytics.tags.map(tag => tag.name)
             }
+            
             this.azureToolkitService.saveImage(transferObject).subscribe(saveSuccessful => {
                 this.currentItemSaved = saveSuccessful;
+                this.savingImage = false;
             });
         }
     }

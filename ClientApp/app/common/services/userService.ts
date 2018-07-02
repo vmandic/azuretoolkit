@@ -16,7 +16,7 @@ import { User, AADUser } from '../models/user';
      }
 
      public getUser(): Observable<User> {
-        return this.http.get(`${this.baseUrl}/.auth/me`)
+        return this.http.get(`${this.baseUrl}.auth/me`)
             .map(response => {
                 try {
                     this.aadUser = response.json()[0] as AADUser;
