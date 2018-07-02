@@ -1,9 +1,12 @@
+import { Observable } from 'rxjs/observable';
+import { ImagePostRequest } from './../../common/models/imagePostRequest';
 import { AzureToolkitService } from './../../common/services/azureToolkit.service';
 import { Component } from '@angular/core';
 
 import { CognitiveService } from '../../common/services/cognitive.service';
 import { ImageResult } from '../../common/models/bingSearchResponse';
 import { ComputerVisionResponse } from '../../common/models/computerVisionResponse';
+
 
 @Component({
     selector: "search",
@@ -49,12 +52,15 @@ export class SearchComponent {
         window.scroll(0, 0);
     }
 
-    public saveImage() {
-        if (this.currentItem != null) {
+    public saveImage(imagePostRequest: ImagePostRequest) {
+        if (this.currentItem != null && this.currentAnalytics != null) {
             let transferObject = {
+                userId: "Vedran",
                 url: this.currentItem.thumbnailUrl,
                 encodingFormat: this.currentItem.encodingFormat,
-                id: this.currentItem.imageId
+                id: this.currentItem.imageId,
+                description: this.currentAnalytics.description.captions[0].text,
+                tags: this.currentAnalytics.tags.map(tag => tag.name)
             }
             this.azureToolkitService.saveImage(transferObject).subscribe(saveSuccessful => {
                 this.currentItemSaved = saveSuccessful;
