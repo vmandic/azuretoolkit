@@ -14,10 +14,10 @@ export class AzureToolkitService {
     }
 
     public saveImage(imagePostRequest: { url: string, id: string, encodingFormat: string }): Observable<boolean> {
-        return this.http.post(`${this.baseUrl}api/images`, imagePostRequest)
-            .map(response => {
-                return response.ok;
-            }).catch(this.handleError);
+        return this.http
+            .post(`${this.baseUrl}api/images`, imagePostRequest)
+            .map(response => response.ok)
+            .catch(this.handleError);
     }
 
     private handleError(error: any): Promise<any> {
@@ -26,9 +26,16 @@ export class AzureToolkitService {
     }
 
     public getImages(userId: string): Observable<SavedImage[]> {
-        return this.http.get(`${this.baseUrl}api/images/${userId}`)
-            .map(images => {
-                return images.json() as SavedImage[];
-            }).catch(this.handleError);
+        return this.http
+            .get(`${this.baseUrl}api/images/${userId}`)
+            .map(images => images.json() as SavedImage[])
+            .catch(this.handleError);
+    }
+
+    public searchImage(userId: string, searchTerm: string): Observable<SavedImage[]> {
+        return this.http
+            .post(`${this.baseUrl}api/images/search/${userId}/${searchTerm}`, null)
+            .map(response => response.json() as SavedImage[])
+            .catch(this.handleError);
     }
 }
